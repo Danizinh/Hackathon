@@ -1,0 +1,6 @@
+__pycache__
+dataset/cortante/*
+dataset/nao_cortante/*
+venv/
+video/*
+modelo_cortantes.pth
