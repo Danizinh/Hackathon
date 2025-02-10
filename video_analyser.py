@@ -25,7 +25,7 @@ def main():
         return
 
     total_frames = 0
-    intervalo = 1
+    intervalo = 2
 
     print("Iniciando processamento do vídeo...")
 
@@ -36,6 +36,7 @@ def main():
             break
 
         total_frames += 1
+        
         
         if total_frames % intervalo == 0:
             image_pil = preprocess_frame(frame)  # Converte o frame para imagem PIL

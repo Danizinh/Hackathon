@@ -56,7 +56,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model.to(device)
 
 # Função de Treinamento
-def train_model(model, dataloader, epochs=5, lr=0.001):
+def train_model(model, dataloader, epochs=5, lr=0.0005):
     criterion = torch.nn.CrossEntropyLoss()
     optimizer = torch.optim.Adam(model.parameters(), lr=lr)
     
