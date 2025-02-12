@@ -1,10 +1,11 @@
+import datetime
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 import cv2
 import torch
 from PIL import Image
 import numpy as np
-from detect import predict  # Importa a função predict
+from detect import predict, send_alert
 
 def preprocess_frame(frame):
     """ Converte o frame do OpenCV para uma imagem PIL e aplica transformações. """
@@ -25,7 +26,8 @@ def main():
         return
 
     total_frames = 0
-    intervalo = 2
+    intervalo = 2    
+    last_alert = datetime.datetime.now() - datetime.timedelta(hours=1)
 
     print("Iniciando processamento do vídeo...")
 
@@ -37,10 +39,18 @@ def main():
 
         total_frames += 1
         
-        
         if total_frames % intervalo == 0:
             image_pil = preprocess_frame(frame)  # Converte o frame para imagem PIL
-            predict(image_pil)  # Chama a função de predição
+            is_danger = predict(image_pil)  # Chama a função de predição
+            
+            if is_danger:    
+                # Verifica se já passou 10 segundos do ultimo alerta
+                if (datetime.datetime.now() - last_alert).seconds < 10:
+                    print(f"Alerta já enviado há {(datetime.datetime.now() - last_alert).seconds} segundos.")
+                    
+                else:
+                    last_alert = datetime.datetime.now()
+                    send_alert()  # Envia alerta por e-mail
 
             cv2.imshow('Video', frame)
 

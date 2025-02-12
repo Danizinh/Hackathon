@@ -8,7 +8,6 @@ import smtplib
 from email.mime.text import MIMEText
 import cv2
 
-
 # Configuração do dataset
 class CuttingObjectsDataset(Dataset):
     def __init__(self, root_dir, transform=None):
@@ -80,18 +79,7 @@ def train_model(model, dataloader, epochs=5, lr=0.0005):
 
 # Sistema de alerta por e-mail
 def send_alert():
-    sender_email = "seu_email@gmail.com"
-    receiver_email = "destinatario@gmail.com"
-    msg = MIMEText("Alerta! Objeto cortante detectado!")
-    msg["Subject"] = "Alerta de Segurança"
-    msg["From"] = sender_email
-    msg["To"] = receiver_email
-
-    with smtplib.SMTP("smtp.gmail.com", 587) as server:
-        server.starttls()
-        server.login(sender_email, "sua_senha")
-        server.sendmail(sender_email, receiver_email, msg.as_string())
-        print("Alerta enviado!")
+    print("Enviando alerta por e-mail...")
 
 def predict(image):
     model.load_state_dict(torch.load("modelo_cortantes.pth"))
@@ -108,12 +96,15 @@ def predict(image):
     
     if prediction == 1:
         print("Objeto cortante detectado!")
+        
+        return True
     else:
         print("Objeto seguro.")
+        
+        return False
 
 # Se não existie o modelo, treina
 if not os.path.exists("modelo_cortantes.pth"):
     treinamento = input("Deseja treinar o modelo? (s/n): ")
     if treinamento.lower() == "s":
         train_model(model, dataloader)
-    
