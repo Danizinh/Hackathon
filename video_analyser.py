@@ -2,7 +2,6 @@ import datetime
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 import cv2
-import torch
 from PIL import Image
 import numpy as np
 from detect import predict, send_alert

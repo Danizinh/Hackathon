@@ -4,9 +4,6 @@ import torchvision.transforms as transforms
 from torchvision import models
 from torch.utils.data import DataLoader, Dataset
 from PIL import Image
-import smtplib
-from email.mime.text import MIMEText
-import cv2
 
 # Configuração do dataset
 class CuttingObjectsDataset(Dataset):
